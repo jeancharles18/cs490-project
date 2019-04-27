@@ -21,14 +21,14 @@ public class CategoryController {
 	@Autowired
 	CategoryService categoryService;
 	
-	
+	//display categoriesList
 	  @GetMapping(value="/category")
 	    public String categoriesList(Model model) {
 	        model.addAttribute("categoriesList", categoryService.getCategories());
 	        return "category/categoriesList";
 	    }
 	
-	
+	//add new category or get cartegoryById to be edited
 	  @GetMapping(value={"/categoriesEdit","/categoriesEdit/{id}"})
 	    public String editCategory(Model model, @PathVariable(required = false, name = "id") Integer id) {
 	        if (null != id) {
@@ -39,17 +39,17 @@ public class CategoryController {
 	        return "category/categoriesEdit";
 	    }
 	
-	
+	  //post edited category to server and display the updated categoryList
 	  @PostMapping(value="/categoriesEdit")
-	    public String addCategory(Model model, Category category) {
+	    public String updateCategory(Model model, Category category) {
 		  categoryService.addCategory(category);	       
 		  model.addAttribute("categoriesList", categoryService.getCategories());
 	        return "category/categoriesList";
 	    }
 	  
-	  
-	  @DeleteMapping(value="/categoriesDelete/{id}")
-	    public String deleteCategory(Model model, @PathVariable(required = true, name = "id") Integer id) {
+	  //delete categoryById
+	  @RequestMapping(value="/categoriesDelete/{id}")
+	    public String deleteCategory(Model model, @PathVariable(name = "id") Integer id) {
 		  	categoryService.deleteCategory(id);	        
 			model.addAttribute("categoriesList", categoryService.getCategories());
 	        return "category/categoriesList";
